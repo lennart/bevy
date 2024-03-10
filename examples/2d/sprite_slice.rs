@@ -1,6 +1,7 @@
 //! Showcases sprite 9 slice scaling and tiling features, enabling usage of
 //! sprites in multiple resolutions while keeping it in proportion
 use bevy::prelude::*;
+use bevy_internal::sprite::Anchor;
 
 fn main() {
     App::new()
@@ -84,11 +85,14 @@ fn spawn_sprites(
 
     for (label, text_style, size, scale_mode) in cases {
         position.x += 0.5 * size.x;
+        let mut transform = Transform::from_translation(position);
+        transform.rotation = Quat::from_rotation_z((36.0 as f32).to_radians());
         let mut cmd = commands.spawn(SpriteBundle {
-            transform: Transform::from_translation(position),
+            transform,
             texture: texture_handle.clone(),
             sprite: Sprite {
                 custom_size: Some(size),
+                anchor: Anchor::CenterRight,
                 ..default()
             },
             ..default()
